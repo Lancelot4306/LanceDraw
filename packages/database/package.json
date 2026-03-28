@@ -12,6 +12,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
+    "@prisma/client-runtime-utils": "^7.5.0",
     "@repo/typescript-config": "workspace:*",
     "@types/pg": "^8.20.0",
     "dotenv": "^17.3.1",
@@ -20,6 +21,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "type": "module"
+  "license": "ISC"
 }

@@ -9,16 +9,18 @@
     "dev": "npm run build && npm run start"
   },
   "dependencies": {
-    "@repo/typescript-config": "workspace:*",
     "@repo/backend-common": "workspace:*",
     "@repo/common": "workspace:*",
+    "@repo/database": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "tsx": "^4.21.0"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "license": "ISC"
 }
