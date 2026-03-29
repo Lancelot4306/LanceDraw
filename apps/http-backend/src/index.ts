@@ -4,15 +4,17 @@ import { JWT_SECRET } from '@repo/backend-common/config';
 import { middleware } from "./middleware";
 import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types";
 import { prisma } from "@repo/database/client";
+import cors from "cors";
 
 const app = express();
 const PORT = 3001;
 
 app.use(express.json());
+app.use(cors());
 
 app.post("/signup", async (req, res) => {
     const parsedData = CreateUserSchema.safeParse(req.body);
-    if(!parsedData.success) {
+    if (!parsedData.success) {
         res.json({
             message: "Incorrect inputs"
         })
@@ -31,7 +33,7 @@ app.post("/signup", async (req, res) => {
         res.json({
             userId: user.id
         })
-    } catch(error) {
+    } catch (error) {
         res.status(411).json({
             message: "User already exists with this username"
         })
@@ -55,7 +57,7 @@ app.post("/signin", async (req, res) => {
         }
     })
 
-    if(!user) {
+    if (!user) {
         res.status(403).json({
             message: "Not authorized"
         })
@@ -81,7 +83,7 @@ app.post("/room", middleware, async (req, res) => {
     }
 
     const userId = req.userId;
-    if(!userId) {
+    if (!userId) {
         return res.status(401).json({ message: "Unauthorized" });
     }
 
@@ -103,20 +105,40 @@ app.post("/room", middleware, async (req, res) => {
     }
 });
 
-app.get("/chats/:roomId", async(req, res) => {
-    const roomId = Number(req.params.roomId);
-    const messages = await prisma.chat.findMany({
+app.get("/chats/:roomId", async (req, res) => {
+    try {
+        const roomId = Number(req.params.roomId);
+        const messages = await prisma.chat.findMany({
+            where: {
+                roomId: roomId
+            },
+            orderBy: {
+                id: "desc"
+            },
+            take: 50
+        });
+
+        res.json({
+            messages
+        })
+    } catch (error) {
+        console.log(error);
+        res.json({
+            messages: []
+        })
+    }
+});
+
+app.get("/room/:slug", async (req, res) => {
+    const slug = req.params.slug;
+    const room = await prisma.room.findFirst({
         where: {
-            roomId: roomId
-        },
-        orderBy: {
-            id: "desc"
-        },
-        take: 50
+            slug
+        }
     });
 
     res.json({
-        messages
+        room
     })
 });
 
