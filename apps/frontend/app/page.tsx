@@ -10,14 +10,18 @@ function App() {
             <div className="flex items-center gap-2">
               <Pencil className="w-8 h-8 text-blue-600" />
               
-              <span className="text-2xl font-bold text-slate-900">
-                LanceDraw
-              </span>
+              <Link href={"/"}>
+                <span className="text-2xl font-bold text-slate-900">
+                  LanceDraw
+                </span>
+              </Link>
             </div>
 
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
-              Get Started
-            </button>
+            <Link href={"/signup"}>
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                Get Started
+              </button>
+            </Link>
           </div>
         </div>
       </nav>
@@ -30,7 +34,7 @@ function App() {
           </h1>
 
           <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl mx-auto">
-            A powerful, intuitive whiteboard for sketching diagrams, wireframes, and bringing your creative vision to life. No sign-up required.
+            A powerful, intuitive whiteboard for sketching diagrams, wireframes, and bringing your creative vision to life.
           </p>
 
           <div className="flex gap-4 justify-center flex-wrap">
@@ -48,6 +52,7 @@ function App() {
           </div>
         </div>
 
+        {/* Prevew */}
         <div className="mt-20 relative">
           <div className="absolute inset-0 bg-linear-to-r from-blue-400 to-cyan-400 rounded-3xl blur-3xl opacity-20"></div>
           
@@ -153,9 +158,11 @@ function App() {
             Join thousands of creators, designers, and teams using LanceDraw every day.
           </p>
           
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
-            Launch LanceDraw
-          </button>
+          <Link href={"/signin"}>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
+              Launch LanceDraw
+            </button>
+          </Link>
         </div>
       </section>
 

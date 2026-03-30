@@ -2,33 +2,57 @@
 
 import { WS_URL } from "@/config";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Canvas } from "./Canvas";
 
-export function RoomCanvas({roomId}: {roomId: string}) {
+export function RoomCanvas({ roomId }: { roomId: string }) {
     const [socket, setSocket] = useState<WebSocket | null>(null);
+    const [token, setToken] = useState<string>("");
+    const [connectionError, setConnectionError] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
-        const ws = new WebSocket(`${WS_URL}?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NGRhZjhkNC1iNmZmLTQ1NjQtOGQ4OC1iOWZmZGMzYjk4MTYiLCJpYXQiOjE3NzQ2NzI3NDd9.CDtG-1shCDuD7eWaJIgzKY6N0jjyxPdwZU4cybAoE7s`)
+        const token = localStorage.getItem("token");
+        if (!token) {
+            router.push("/signin");
+            return;
+        }
+        setToken(token);
+
+        const ws = new WebSocket(`${WS_URL}?token=${token}`);
 
         ws.onopen = () => {
             setSocket(ws);
-            const data = JSON.stringify({
+            ws.send(JSON.stringify({
                 type: "join_room",
                 roomId
-            });
-            console.log(data);
-            ws.send(data);
-        }
-        
-    }, [])
-   
-    if (!socket) {
-        return <div>
-            Connecting to server...
-        </div>
+            }));
+        };
+
+        ws.onerror = () => {
+            setConnectionError(true);
+        };
+
+        ws.onclose = () => {
+            setSocket(null);
+        };
+
+        return () => {
+            ws.close();
+        };
+    }, [roomId]);
+
+    if (connectionError) {
+        return <div>Failed to connect to server. Please refresh and try again.</div>;
     }
 
-    return <div>
-        <Canvas roomId={roomId} socket={socket} />
-    </div>
+    if (!socket) {
+        return <div>Connecting to server...</div>;
+    }
+
+    return (
+        <div>
+            <Canvas roomId={roomId} socket={socket} token={token} />
+        </div>
+    );
 }
