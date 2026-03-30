@@ -1,18 +1,48 @@
 import { useEffect, useRef, useState } from "react";
 import useWindowSize from "../hooks/useWindowSize";
 import { IconButton } from "./IconButton";
-import { Circle, Pencil, RectangleHorizontalIcon, Eraser } from "lucide-react";
+import { Circle, Pencil, RectangleHorizontalIcon, Eraser, Hash, Copy, Check } from "lucide-react";
 import { Game } from "@/draw/game";
 
 export type Tool = "circle" | "rect" | "pencil" | "eraser";
 
-function Topbar({ selectedTool, setSelectedTool }: {
+function RoomIdBadge({ roomId }: { roomId: string }) {
+    const [copied, setCopied] = useState(false);
+
+    async function handleCopy() {
+        try {
+            await navigator.clipboard.writeText(roomId);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch { }
+    }
+
+    return (
+        <div
+            title="Room ID — share this so others can join"
+            className="flex items-center gap-1.5 bg-black/60 backdrop-blur-sm border border-white/10 text-white/80 text-xs font-mono px-3 py-1.5 rounded-lg"
+        >
+            <Hash className="w-3 h-3 text-white/50" />
+            <span>{roomId}</span>
+            <button
+                onClick={handleCopy}
+                className="ml-1 text-white/50 hover:text-white transition-colors"
+                title="Copy Room ID"
+            >
+                {copied ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
+            </button>
+        </div>
+    );
+}
+
+function Topbar({ selectedTool, setSelectedTool, roomId }: {
     selectedTool: Tool;
     setSelectedTool: (s: Tool) => void;
+    roomId: string;
 }) {
     return (
-        <div style={{ position: "fixed", top: 10, left: 10 }}>
-            <div className="flex gap-t">
+        <div style={{ position: "fixed", top: 10, left: 10, right: 10, display: "flex", alignItems: "center", justifyContent: "space-between", pointerEvents: "none" }}>
+            <div style={{ pointerEvents: "auto" }} className="flex gap-1">
                 <IconButton
                     onClick={() => setSelectedTool("pencil")}
                     activated={selectedTool === "pencil"}
@@ -33,6 +63,10 @@ function Topbar({ selectedTool, setSelectedTool }: {
                     activated={selectedTool === "eraser"}
                     icon={<Eraser />}
                 />
+            </div>
+
+            <div style={{ pointerEvents: "auto" }}>
+                <RoomIdBadge roomId={roomId} />
             </div>
         </div>
     );
@@ -72,7 +106,7 @@ export function Canvas({
                 height={window.innerHeight}
                 style={{ cursor: selectedTool === "eraser" ? "cell" : "crosshair" }}
             />
-            <Topbar setSelectedTool={setSelectedTool} selectedTool={selectedTool} />
+            <Topbar setSelectedTool={setSelectedTool} selectedTool={selectedTool} roomId={roomId} />
         </div>
     );
 }

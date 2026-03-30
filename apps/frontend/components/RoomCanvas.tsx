@@ -8,7 +8,6 @@ import { Canvas } from "./Canvas";
 export function RoomCanvas({ roomId }: { roomId: string }) {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [token, setToken] = useState<string>("");
-    const [connectionError, setConnectionError] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -29,10 +28,6 @@ export function RoomCanvas({ roomId }: { roomId: string }) {
             }));
         };
 
-        ws.onerror = () => {
-            setConnectionError(true);
-        };
-
         ws.onclose = () => {
             setSocket(null);
         };
@@ -41,10 +36,6 @@ export function RoomCanvas({ roomId }: { roomId: string }) {
             ws.close();
         };
     }, [roomId]);
-
-    if (connectionError) {
-        return <div>Failed to connect to server. Please refresh and try again.</div>;
-    }
 
     if (!socket) {
         return <div>Connecting to server...</div>;
