@@ -1,5 +1,6 @@
 import { Pencil, Users, Zap, Download, Layers, Globe } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <Pencil className="w-8 h-8 text-blue-600" />
+            <Image src="/LanceDraw.svg" width={30} height={30} alt="LanceDraw"/>
               
               <Link href={"/"}>
                 <span className="text-2xl font-bold text-slate-900">
@@ -49,19 +50,6 @@ function App() {
                 Sign Up
               </button>
             </Link>
-          </div>
-        </div>
-
-        {/* Prevew */}
-        <div className="mt-20 relative">
-          <div className="absolute inset-0 bg-linear-to-r from-blue-400 to-cyan-400 rounded-3xl blur-3xl opacity-20"></div>
-          
-          <div className="relative bg-white rounded-2xl shadow-2xl border border-slate-200 p-8 aspect-video flex items-center justify-center">
-            <div className="text-center">
-              <Layers className="w-24 h-24 text-slate-300 mx-auto mb-4" />
-              
-              <p className="text-slate-400 text-lg">Canvas Preview</p>
-            </div>
           </div>
         </div>
       </section>

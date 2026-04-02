@@ -72,6 +72,7 @@ export class Game {
                 this.clearCanvas();
             }
 
+            // Another user erased a shape — remove it locally too
             if (message.type === "erase") {
                 this.existingShapes = this.existingShapes.filter(
                     (s) => s.id !== message.shapeId
@@ -118,8 +119,10 @@ export class Game {
         this.ctx.lineWidth = 1;
     }
 
+    // ─── Hit testing ─────────────────────────────────────────────────────────────
+
     private isPointOnShape(x: number, y: number, shape: Shape): boolean {
-        const TOLERANCE = 6;
+        const TOLERANCE = 6; // px proximity for stroke hit-testing
 
         if (shape.type === "rect") {
             const { x: rx, y: ry, width: rw, height: rh } = shape;
@@ -150,6 +153,7 @@ export class Game {
         return false;
     }
 
+    // Shortest distance from point (px, py) to segment a→b
     private distToSegment(
         px: number, py: number,
         a: { x: number; y: number },
@@ -163,26 +167,34 @@ export class Game {
         return Math.hypot(px - (a.x + t * dx), py - (a.y + t * dy));
     }
 
+    // ─── Eraser ──────────────────────────────────────────────────────────────────
+
     private async eraseShapeAt(x: number, y: number) {
+        // Iterate from top (last drawn) to bottom so the topmost shape is erased first
         for (let i = this.existingShapes.length - 1; i >= 0; i--) {
             const shape = this.existingShapes[i];
             if (this.isPointOnShape(x, y, shape)) {
+                // Remove locally immediately for responsiveness
                 this.existingShapes.splice(i, 1);
                 this.clearCanvas();
 
                 if (shape.id !== undefined) {
+                    // Persist deletion in the DB
                     await deleteShape(shape.id, this.token);
 
+                    // Broadcast to other users in the room
                     this.socket.send(JSON.stringify({
                         type: "erase",
                         shapeId: shape.id,
                         roomId: this.roomId,
                     }));
                 }
-                break;
+                break; // Only erase one shape per touch point
             }
         }
     }
+
+    // ─── Mouse handlers ───────────────────────────────────────────────────────────
 
     mouseDownHandler = (e: MouseEvent) => {
         this.clicked = true;
@@ -229,7 +241,9 @@ export class Game {
 
         if (!shape) return;
 
-        // this.existingShapes.push(shape);
+        // Do NOT push to existingShapes here.
+        // The WS server echoes the message back to all clients including the sender,
+        // so initHandlers will add it exactly once for everyone.
         this.socket.send(JSON.stringify({
             type: "chat",
             message: JSON.stringify({ shape }),
