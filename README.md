@@ -19,7 +19,7 @@ A real-time collaborative whiteboard built with Next.js, Express, WebSockets, an
 
 | Layer | Technology |
 |---|---|
-| Frontend | Next.js 14 (App Router), Tailwind CSS, Lucide icons |
+| Frontend | Next.js 16 (App Router), Tailwind CSS, Lucide icons |
 | HTTP API | Express, Zod validation, Prisma ORM |
 | Real-time | `ws` WebSocket server |
 | Database | PostgreSQL via Prisma |
@@ -82,7 +82,6 @@ Create a `.env` file in the project root:
 
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/drawapp"
-JWT_SECRET="your-secret-key-here"
 ```
 
 ### 3. Run database migrations
@@ -117,9 +116,8 @@ NEXT_PUBLIC_WS_URL=ws://localhost:8080
 
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/drawapp
-JWT_SECRET=your-secret-key-here
-PORT=3001        # http-backend
-PORT=8080        # ws-server
+HTTP_PORT=3001        # http-backend
+WS_PORT=8080        # ws-server
 ```
 
 ---
