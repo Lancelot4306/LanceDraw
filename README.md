@@ -215,12 +215,3 @@ The recommended approach is to deploy all three services to [Railway](https://ra
 6. Generate a public domain for each service and update the frontend env vars with the live URLs (use `wss://` for the WebSocket server)
 
 ---
-
-## Known Limitations
-
-- Passwords are stored in plaintext — hashing with bcrypt is marked as a TODO in the codebase
-- No member/guest system — only room admins (creators) appear in the dashboard; others join via Room ID
-- No undo/redo
-- Mobile touch events are not yet handled
-
----
