@@ -194,24 +194,3 @@ model Chat {
 ```
 
 ---
-
-## Deployment
-
-The recommended approach is to deploy all three services to [Railway](https://railway.app) as separate services within one project, with a Railway-managed Postgres database.
-
-### Steps
-
-1. Push your repo to GitHub
-2. Create a new Railway project and add three services — one per app, each pointing to the same repo with a different **Root Directory**:
-   - `apps/frontend`
-   - `apps/http-backend`
-   - `apps/ws-server`
-3. Add a **PostgreSQL** database service — Railway injects `DATABASE_URL` automatically
-4. Set environment variables per service (see above)
-5. Set the http-backend start command to run migrations on deploy:
-   ```bash
-   npx prisma migrate deploy && node dist/index.js
-   ```
-6. Generate a public domain for each service and update the frontend env vars with the live URLs (use `wss://` for the WebSocket server)
-
----
