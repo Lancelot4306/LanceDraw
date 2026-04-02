@@ -25,7 +25,7 @@ A real-time collaborative whiteboard built with Next.js, Express, WebSockets, an
 </p>
  
 <p align="center">
-  <img src="docs/screenshots/auth.png" alt="Auth — sign in and sign up" width="40%" />
+  <img src="docs/screenshots/auth.png" alt="Auth — sign in and sign up" width="80%" />
   <br/>
   <em>Auth — simple sign up and sign in flow</em>
 </p>
