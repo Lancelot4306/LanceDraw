@@ -4,6 +4,34 @@ A real-time collaborative whiteboard built with Next.js, Express, WebSockets, an
 
 ---
 
+## Screenshots
+ 
+<p align="center">
+  <img src="docs/screenshots/homepage.png" alt="Homepage - landing page" width="80%" />
+  <br/>
+  <em>Homepage - landing page</em>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/dashboard.png" alt="Dashboard — room management" width="80%" />
+  <br/>
+  <em>Dashboard — create rooms, join by ID, and manage your spaces</em>
+</p>
+ 
+<p align="center">
+  <img src="docs/screenshots/canvas.png" alt="Canvas — collaborative whiteboard" width="80%" />
+  <br/>
+  <em>Canvas — draw rectangles, circles, and freehand strokes in real time</em>
+</p>
+ 
+<p align="center">
+  <img src="docs/screenshots/auth.png" alt="Auth — sign in and sign up" width="40%" />
+  <br/>
+  <em>Auth — simple sign up and sign in flow</em>
+</p>
+ 
+---
+
 ## Features
 
 - **Real-time collaboration** — changes broadcast instantly via WebSocket to all users in a room
